@@ -16,11 +16,17 @@ class Auction(m.Model):
     creator = m.ForeignKey(User, related_name="auctions", on_delete=m.CASCADE)
     winner = m.ForeignKey(User, related_name="won", on_delete=m.SET_NULL, blank=True, null=True)
 
+    def __str__(self):
+        return f"({self.id}) {self.title}"
+
 
 class Bid(m.Model):
     amount = m.FloatField()
     auction = m.ForeignKey(Auction, related_name='bids', on_delete=m.CASCADE)
     author = m.ForeignKey(User, related_name='bids', on_delete=m.CASCADE)
+
+    def __str__(self):
+        return f"({self.id}) {self.author} bids ${self.amount} for {self.auction}"
 
 
 class Comment(m.Model):
@@ -29,12 +35,21 @@ class Comment(m.Model):
     author = m.ForeignKey(User, related_name='comments', on_delete=m.SET_NULL, null=True)
     date = m.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"({self.id}) Author: {self.author} about {self.auction}"
+
 
 class Category(m.Model):
     name = m.CharField(max_length=30)
     auctions = m.ManyToManyField(Auction, blank=True)
 
+    def __str__(self):
+        return f"({self.id}) {self.name}"
+
 
 class Watchlist(m.Model):
     owner = m.ForeignKey(User, related_name='watchlist', on_delete=m.CASCADE)
     auctions = m.ManyToManyField(Auction, related_name='watchlist', blank=True)
+
+    def __str__(self):
+        return f"({self.id}) {self.owner}"
