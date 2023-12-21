@@ -4,11 +4,36 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import *
+from .forms import *
+from .util import *
 
 
 def index(request):
     return render(request, "auctions/index.html")
+
+
+def categories(request):
+    ...
+
+
+def watchlist(request):
+    ...
+
+
+def create(request):
+    if request.method == "POST":
+        form = CreateListingForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.creator = request.user
+            instance.save()
+            return HttpResponseRedirect(reverse("index"))
+
+    else:
+        form = CreateListingForm(initial={'categ': 'Category'})
+
+    return render(request, "auctions/create.html", {"form": form})
 
 
 def login_view(request):

@@ -7,17 +7,18 @@ class User(AbstractUser):
 
 
 class Listing(m.Model):
-    title = m.CharField(max_length=64)
+    title = m.CharField(max_length=50)
     description = m.TextField()
     price = m.FloatField()
     categ = m.ForeignKey('Category', on_delete=m.SET_NULL, blank=True, null=True)
     date = m.DateTimeField(auto_now_add=True)
-    image_url = m.TextField(blank=True)
+    image_url = m.TextField(blank=True, null=True)
     creator = m.ForeignKey(User, related_name="listings", on_delete=m.CASCADE)
     winner = m.ForeignKey(User, related_name="won", on_delete=m.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return f"({self.id}) {self.title}"
+
 
 
 class Bid(m.Model):
