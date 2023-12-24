@@ -1,4 +1,9 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block extrahead %}
+  <link href="{% static 'auctions/index.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
 <h2>Active Listings</h2>

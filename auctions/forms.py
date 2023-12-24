@@ -33,3 +33,12 @@ class CreateListingForm(f.ModelForm):
             raise f.ValidationError('The price must at least $1')
         
         return price
+    
+class PlaceBidForm(f.ModelForm):
+    class Meta:
+        model = Bid
+        fields = ('amount',)
+
+        labels = {'amount': '',}
+        
+        widgets = {'amount': f.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Bid'}),}

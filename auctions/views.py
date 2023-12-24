@@ -10,11 +10,39 @@ from .util import *
 
 
 def index(request):
-    return render(request, "auctions/index.html", {"listings": Listing.objects.all()})
+    return render(request, "auctions/index.html", {
+        "listings": Listing.objects.all()})
 
 
 def listing(request, listing_id):
-    ...
+    try:
+        l = Listing.objects.get(pk=listing_id)
+    except Listing.DoesNotExist:
+        return render(request, "auctions/error.html", {"error": 1})
+    
+    if request.method == "POST":
+        form = PlaceBidForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data["amount"]
+            if amount < round(l.price * 1.1, 1):
+                return render(request, "auctions/error.html", {"error": 2})
+
+            l.price = amount
+            l.save()
+
+            instance = form.save(commit=False)
+            instance.listing = l
+            instance.author = request.user
+            instance.save()
+            return HttpResponseRedirect(reverse("listing", kwargs={
+                "listing_id": listing_id}))     
+
+    else:
+        form = PlaceBidForm()
+        form.fields["amount"].widget.attrs["min"] = round(l.price * 1.1, 1)
+        return render(request, "auctions/listing.html", {
+            "listing": l, "form": form})
+            
 
 
 def categories(request):
