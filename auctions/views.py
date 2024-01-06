@@ -10,16 +10,38 @@ from .util import *
 
 
 def index(request):
+    """Shows a listing of auctions."""
     return render(request, "auctions/index.html", {
         "listings": Listing.objects.all()})
 
 
 def listing(request, listing_id):
+    """Shows a specific listing page."""
+    try:
+        l = Listing.objects.get(pk=listing_id)
+        w = Watchlist.objects.get(owner=request.user)
+        if w.listings.contains(l):
+            in_watchlist = True
+        else:
+            in_watchlist = False
+    except Listing.DoesNotExist:
+        return render(request, "auctions/error.html", {"error": 1})
+    except Watchlist.DoesNotExist:
+        in_watchlist = False
+    
+    form = PlaceBidForm()
+    form.fields["amount"].widget.attrs["min"] = round(l.price * 1.1, 1)
+    return render(request, "auctions/listing.html", {
+        "listing": l, "in_watchlist": in_watchlist, "form": form})
+    
+
+def place_bid(request, listing_id):
+    """Manages the bid placing of a listing."""
     try:
         l = Listing.objects.get(pk=listing_id)
     except Listing.DoesNotExist:
         return render(request, "auctions/error.html", {"error": 1})
-    
+
     if request.method == "POST":
         form = PlaceBidForm(request.POST)
         if form.is_valid():
@@ -35,15 +57,35 @@ def listing(request, listing_id):
             instance.author = request.user
             instance.save()
             return HttpResponseRedirect(reverse("listing", kwargs={
-                "listing_id": listing_id}))     
+                "listing_id": listing_id}))
 
-    else:
-        form = PlaceBidForm()
-        form.fields["amount"].widget.attrs["min"] = round(l.price * 1.1, 1)
-        return render(request, "auctions/listing.html", {
-            "listing": l, "form": form})
+
+def manage_watchlist(request, listing_id):
+    """Manages adding or removing a listing from a watchlist."""
+    try:
+        l = Listing.objects.get(pk=listing_id)
+    except Listing.DoesNotExist:
+        return render(request, "auctions/error.html", {"error": 1})
+
+    watchlist = request.POST.get("watchlist", None)
+
+    if watchlist == "add":
+        w, created = Watchlist.objects.get_or_create(
+                owner=request.user,
+                defaults={"owner": request.user})
+        w.listings.add(l)
+        if created: w.save()
+
+    elif watchlist == "remove":
+        w, created = Watchlist.objects.get_or_create(
+                owner=request.user,
+                defaults={"owner": request.user})
+        w.listings.remove(l)
+        if created: w.save()
+
+    return HttpResponseRedirect(reverse("listing", kwargs={
+        "listing_id": listing_id}))
             
-
 
 def categories(request):
     ...

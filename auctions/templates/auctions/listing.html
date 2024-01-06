@@ -11,7 +11,16 @@
   <h2>Listing: {{ listing.title }}</h2>
   
   {% if user.is_authenticated %}
-  <button>Watchlist</button>
+  <form class="watchlist-form" action="{% url 'manage_watchlist' listing_id=listing.id %}" method="post">
+    {% csrf_token %}
+    {% if not in_watchlist %}
+      <input type="hidden" name="watchlist" value="add">
+      <input type="submit" value="Add to Watchlist">
+    {% else %}
+      <input type="hidden" name="watchlist" value="remove">
+      <input type="submit" value="Remove from Watchlist">
+    {% endif %}
+  </form>
   {% endif %}
 </div>
 
@@ -29,7 +38,7 @@
 </div>
 
 {% if user.is_authenticated %}
-<form class="bid-form" action="{% url 'listing' listing_id=listing.id %}" method="post">
+<form class="bid-form" action="{% url 'place_bid' listing_id=listing.id %}" method="post">
   {% csrf_token %}
   {{ form }}
   <input type="submit" value="Place Bid">
