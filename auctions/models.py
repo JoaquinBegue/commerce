@@ -15,6 +15,7 @@ class Listing(m.Model):
     image_url = m.TextField(blank=True, null=True)
     creator = m.ForeignKey(User, related_name="listings", on_delete=m.CASCADE)
     winner = m.ForeignKey(User, related_name="won", on_delete=m.SET_NULL, blank=True, null=True)
+    active = m.BooleanField(default=True, null=False, blank=False)
 
     def __str__(self):
         return f"({self.id}) {self.title}"

@@ -3,6 +3,8 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+
 
 from .models import *
 from .forms import *
@@ -19,9 +21,12 @@ def listing(request, listing_id):
     """Shows a specific listing page."""
     try:
         l = Listing.objects.get(pk=listing_id)
-        w = Watchlist.objects.get(owner=request.user)
-        if w.listings.contains(l):
-            in_watchlist = True
+        if request.user.is_authenticated:
+            w = Watchlist.objects.get(owner=request.user)
+            if w.listings.contains(l):
+                in_watchlist = True
+            else:
+                in_watchlist = False
         else:
             in_watchlist = False
     except Listing.DoesNotExist:
@@ -31,10 +36,12 @@ def listing(request, listing_id):
     
     form = PlaceBidForm()
     form.fields["amount"].widget.attrs["min"] = round(l.price * 1.1, 1)
+    owner = l.creator == request.user
     return render(request, "auctions/listing.html", {
-        "listing": l, "in_watchlist": in_watchlist, "form": form})
+        "listing": l, "in_watchlist": in_watchlist, "owner": owner, "form": form})
     
 
+@login_required
 def place_bid(request, listing_id):
     """Manages the bid placing of a listing."""
     try:
@@ -60,6 +67,7 @@ def place_bid(request, listing_id):
                 "listing_id": listing_id}))
 
 
+@login_required
 def manage_watchlist(request, listing_id):
     """Manages adding or removing a listing from a watchlist."""
     try:
@@ -87,14 +95,17 @@ def manage_watchlist(request, listing_id):
         "listing_id": listing_id}))
             
 
+@login_required
 def categories(request):
     ...
 
 
+@login_required
 def watchlist(request):
     ...
 
 
+@login_required
 def create(request):
     if request.method == "POST":
         form = CreateListingForm(request.POST)
