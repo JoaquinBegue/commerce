@@ -38,11 +38,13 @@ def listing(request, listing_id):
     
     form = PlaceBidForm()
     form.fields["amount"].widget.attrs["min"] = round(l.price * 1.1, 1)
-    owner = l.creator == request.user
-    active = l.active
+
     return render(request, "auctions/listing.html", {
-        "listing": l, "in_watchlist": in_watchlist, "owner": owner, 
-        "active": active, "form": form})
+        "listing": l, "in_watchlist": in_watchlist,
+        "owner": l.creator == request.user, 
+        "active": l.active,
+        "winner": l.winner == request.user,
+        "form": form})
     
 
 @login_required
@@ -101,7 +103,7 @@ def manage_watchlist(request, listing_id):
 
 @login_required
 def manage_closing(request, listing_id):
-    """Manages closing an active listing."""
+    """Manages closing an active listing and setting the winner."""
     try:
         l = Listing.objects.get(pk=listing_id)
     except Listing.DoesNotExist:
@@ -111,6 +113,15 @@ def manage_closing(request, listing_id):
         return render(request, "auctions/error.html", {"error": 1})
     
     l.active = False
+    
+    try:
+        winner_bid = Bid.objects.get(amount=l.price, listing=l)
+    except Bid.DoesNotExist:
+        winner_bid = False
+
+    if winner_bid:
+        l.winner = winner_bid.author
+    
     l.save()
 
     return HttpResponseRedirect(reverse("listing", kwargs={

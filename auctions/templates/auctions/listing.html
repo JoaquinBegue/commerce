@@ -8,13 +8,15 @@
 {% block body %}
 
 <div class="header">
-  <h2>Listing: {{ listing.title }}
-    {% if active %}
-    ( Active )
-    {% else %}
-    ( Closed )
-    {% endif %}
-  </h2>
+  {% if not active and winner %}
+    ¡You won the auction!
+  {% elif not active and owner %}
+    This auction listing is closed. The winner is {{ listing.winner }}.
+  {% elif not active and not winner %}
+    This auction listing is closed.
+  {% endif %}
+
+  <h2>Listing: {{ listing.title }}</h2>
   
   {% if user.is_authenticated %}
   <form class="watchlist-form" action="{% url 'manage_watchlist' listing_id=listing.id %}" method="post">
