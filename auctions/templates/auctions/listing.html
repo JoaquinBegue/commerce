@@ -8,7 +8,13 @@
 {% block body %}
 
 <div class="header">
-  <h2>Listing: {{ listing.title }}</h2>
+  <h2>Listing: {{ listing.title }}
+    {% if active %}
+    ( Active )
+    {% else %}
+    ( Closed )
+    {% endif %}
+  </h2>
   
   {% if user.is_authenticated %}
   <form class="watchlist-form" action="{% url 'manage_watchlist' listing_id=listing.id %}" method="post">
@@ -57,11 +63,12 @@
   </ul>
 </div>
 
-<div class="close">
-  {% if owner %}
-    <input type="hidden" name="close" value="close">
-    <input type="submit" value="Close">
-  {% endif %}
-</div>
+{% if owner %}
+<form class="closing-form" action="{% url 'manage_closing' listing_id=listing.id %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="close" value="close">
+  <input type="submit" value="Close">
+</form>
+{% endif %}
 
 {% endblock %}
