@@ -65,7 +65,7 @@
   </ul>
 </div>
 
-{% if owner %}
+{% if active and owner %}
 <form class="closing-form" action="{% url 'manage_closing' listing_id=listing.id %}" method="post">
   {% csrf_token %}
   <input type="hidden" name="close" value="close">

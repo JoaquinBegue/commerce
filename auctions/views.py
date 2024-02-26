@@ -154,6 +154,24 @@ def create(request):
     return render(request, "auctions/create.html", {"form": form})
 
 
+def categories(request):
+    """Shows a list of categories."""
+    return render(request, "auctions/categories.html",
+                  {"categories": Category.objects.all()})
+
+
+def category_listings(request, category):
+    """Shows a list of listings of the specified category."""
+    try:
+        category = Category.objects.get(name=category)
+    except Category.DoesNotExist:
+        return render(request, "auctions/error.html", {"error": 1})
+    
+    return render(request, "auctions/category_listings.html",
+                  {"category": category,
+                   "listings": Listing.objects.filter(categ=category)})
+
+
 def login_view(request):
     if request.method == "POST":
 

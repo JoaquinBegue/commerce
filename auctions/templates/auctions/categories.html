@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block title %}Auctions - Categories{% endblock %}
+
+{% block extrahead %}
+  <link href="{% static 'auctions/index.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<h2>Categories</h2>
+
+<ul>
+  {% for category in categories %}
+  <div class="category">
+    <a href="{% url 'category_listings' category=category.name %}">
+      <h3>{{ category.name }}</h3>
+    </a>
+  </div>
+  {% empty %}
+  <li>No active categories yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

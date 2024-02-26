@@ -1,0 +1,39 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block title %}Auctions - {{ category.name }}{% endblock %}
+
+{% block extrahead %}
+  <link href="{% static 'auctions/index.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<h2>{{ category.name }}: Active Listings</h2>
+
+<ul>
+  {% for listing in listings %}
+  <div class="listing">
+    <a href="{% url 'listing' listing_id=listing.id %}">
+      <h3>{{ listing.title }}</h3>
+    </a>
+    {% if listing.image_url %}
+    <div class="grid-container">
+      <div class="grid-img">
+        <img src="{{ listing.image_url }}" height="100px">
+      </div>
+    {% else %}
+    <div class="no-img-grid-cont">
+    {% endif %}
+      <div class="grid-desc">
+        {{ listing.description }}
+      </div>
+      <div class="grid-price">
+        {{ listing.price }}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <li>No active listings yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
