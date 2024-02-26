@@ -26,25 +26,28 @@ def listing(request, listing_id):
         if request.user.is_authenticated:
             w = Watchlist.objects.get(owner=request.user)
             if w.listings.contains(l):
-                in_watchlist = True
+                watchlisted = True
             else:
-                in_watchlist = False
+                watchlisted = False
         else:
-            in_watchlist = False
+            watchlisted = False
     except Listing.DoesNotExist:
         return render(request, "auctions/error.html", {"error": 1})
     except Watchlist.DoesNotExist:
-        in_watchlist = False
+        watchlisted = False
     
-    form = PlaceBidForm()
-    form.fields["amount"].widget.attrs["min"] = round(l.price * 1.1, 1)
+    bid_form = PlaceBidForm()
+    bid_form.fields["amount"].widget.attrs["min"] = round(l.price * 1.1, 1)
 
     return render(request, "auctions/listing.html", {
-        "listing": l, "in_watchlist": in_watchlist,
+        "listing": l,
+        "watchlisted": watchlisted,
         "owner": l.creator == request.user, 
         "active": l.active,
         "winner": l.winner == request.user,
-        "form": form})
+        "bid_form": bid_form,
+        "comment_form": AddCommentForm(),
+        "comments": Comment.objects.filter(listing=l)})
 
 
 @login_required
@@ -81,6 +84,25 @@ def place_bid(request, listing_id):
             l.price = amount
             l.save()
 
+            instance = form.save(commit=False)
+            instance.listing = l
+            instance.author = request.user
+            instance.save()
+            return HttpResponseRedirect(reverse("listing", kwargs={
+                "listing_id": listing_id}))
+
+
+@login_required
+def add_comment(request, listing_id):
+    """Manages the comment adding of a listing."""
+    try:
+        l = Listing.objects.get(pk=listing_id)
+    except Listing.DoesNotExist:
+        return render(request, "auctions/error.html", {"error": 1})
+
+    if request.method == "POST":
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
             instance = form.save(commit=False)
             instance.listing = l
             instance.author = request.user

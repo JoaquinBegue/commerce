@@ -21,7 +21,7 @@
   {% if user.is_authenticated %}
   <form class="watchlist-form" action="{% url 'manage_watchlist' listing_id=listing.id %}" method="post">
     {% csrf_token %}
-    {% if not in_watchlist %}
+    {% if not watchlisted %}
       <input type="hidden" name="watchlist" value="add">
       <input type="submit" value="Add to Watchlist">
     {% else %}
@@ -48,7 +48,7 @@
 {% if user.is_authenticated %}
 <form class="bid-form" action="{% url 'place_bid' listing_id=listing.id %}" method="post">
   {% csrf_token %}
-  {{ form }}
+  {{ bid_form }}
   <input type="submit" value="Place Bid">
 </form>
 {% endif %}
@@ -62,6 +62,25 @@
     {% else %}
     <li>Category: No Category Listed</li>
     {% endif %}
+  </ul>
+</div>
+
+{% if user.is_authenticated %}
+<form class="comment-form" action="{% url 'add_comment' listing_id=listing.id %}" method="post">
+  {% csrf_token %}
+  {{ comment_form }}
+  <input type="submit" value="Add">
+</form>
+{% endif %}
+
+<div class="comments">
+  <h3>Comments</h3>
+  <ul>
+    {% for comment in comments %}
+    <li>{{ comment }}</li>
+    {% empty %}
+    <li>No comments added yet.</li>
+    {% endfor %}
   </ul>
 </div>
 
