@@ -45,6 +45,22 @@ def listing(request, listing_id):
         "active": l.active,
         "winner": l.winner == request.user,
         "form": form})
+
+
+@login_required
+def create(request):
+    if request.method == "POST":
+        form = CreateListingForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.creator = request.user
+            instance.save()
+            return HttpResponseRedirect(reverse("index"))
+
+    else:
+        form = CreateListingForm(initial={'categ': 'Category'})
+
+    return render(request, "auctions/create.html", {"form": form})
     
 
 @login_required
@@ -74,6 +90,64 @@ def place_bid(request, listing_id):
 
 
 @login_required
+def manage_closing(request, listing_id):
+    """Manages closing an active listing and setting the winner."""
+    try:
+        l = Listing.objects.get(pk=listing_id)
+    except Listing.DoesNotExist:
+        return render(request, "auctions/error.html", {"error": 1})
+
+    if l.creator != request.user:
+        return render(request, "auctions/error.html", {"error": 1})
+    
+    l.active = False
+    
+    try:
+        winner_bid = Bid.objects.get(amount=l.price, listing=l)
+    except Bid.DoesNotExist:
+        winner_bid = False
+
+    if winner_bid:
+        l.winner = winner_bid.author
+    
+    l.save()
+
+    return HttpResponseRedirect(reverse("listing", kwargs={
+        "listing_id": listing_id}))
+
+
+def categories(request):
+    """Shows a list of categories."""
+    return render(request, "auctions/categories.html",
+                  {"categories": Category.objects.all()})
+
+
+def category_listings(request, category):
+    """Shows a list of listings of the specified category."""
+    try:
+        category = Category.objects.get(name=category)
+    except Category.DoesNotExist:
+        return render(request, "auctions/error.html", {"error": 1})
+    
+    return render(request, "auctions/category_listings.html",
+                  {"category": category,
+                   "listings": Listing.objects.filter(categ=category)})
+
+
+@login_required
+def watchlist(request):
+    """Shows the user watchlist."""
+    watchlist, created = Watchlist.objects.get_or_create(
+        owner=request.user,
+        defaults={"owner": request.user})
+    
+    if created:
+        watchlist.save()
+
+    return render(request, "auctions/watchlist.html", {
+        "watchlist": watchlist})
+
+@login_required
 def manage_watchlist(request, listing_id):
     """Manages adding or removing a listing from a watchlist."""
     try:
@@ -99,77 +173,6 @@ def manage_watchlist(request, listing_id):
 
     return HttpResponseRedirect(reverse("listing", kwargs={
         "listing_id": listing_id}))
-
-
-@login_required
-def manage_closing(request, listing_id):
-    """Manages closing an active listing and setting the winner."""
-    try:
-        l = Listing.objects.get(pk=listing_id)
-    except Listing.DoesNotExist:
-        return render(request, "auctions/error.html", {"error": 1})
-
-    if l.creator != request.user:
-        return render(request, "auctions/error.html", {"error": 1})
-    
-    l.active = False
-    
-    try:
-        winner_bid = Bid.objects.get(amount=l.price, listing=l)
-    except Bid.DoesNotExist:
-        winner_bid = False
-
-    if winner_bid:
-        l.winner = winner_bid.author
-    
-    l.save()
-
-    return HttpResponseRedirect(reverse("listing", kwargs={
-        "listing_id": listing_id}))
-            
-
-@login_required
-def categories(request):
-    ...
-
-
-@login_required
-def watchlist(request):
-    ...
-
-
-@login_required
-def create(request):
-    if request.method == "POST":
-        form = CreateListingForm(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.creator = request.user
-            instance.save()
-            return HttpResponseRedirect(reverse("index"))
-
-    else:
-        form = CreateListingForm(initial={'categ': 'Category'})
-
-    return render(request, "auctions/create.html", {"form": form})
-
-
-def categories(request):
-    """Shows a list of categories."""
-    return render(request, "auctions/categories.html",
-                  {"categories": Category.objects.all()})
-
-
-def category_listings(request, category):
-    """Shows a list of listings of the specified category."""
-    try:
-        category = Category.objects.get(name=category)
-    except Category.DoesNotExist:
-        return render(request, "auctions/error.html", {"error": 1})
-    
-    return render(request, "auctions/category_listings.html",
-                  {"category": category,
-                   "listings": Listing.objects.filter(categ=category)})
 
 
 def login_view(request):

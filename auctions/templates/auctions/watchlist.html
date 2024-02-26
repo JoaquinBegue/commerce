@@ -1,17 +1,17 @@
 {% extends "auctions/layout.html" %}
 {% load static %}
 
-{% block title %}Auctions - {{ category.name }}{% endblock %}
+{% block title %}Auctions - Watchlist{% endblock %}
 
 {% block extrahead %}
   <link href="{% static 'auctions/index.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-<h2>{{ category.name }}: Active Listings</h2>
+<h2>Watchlist</h2>
 
 <ul>
-  {% for listing in listings %}
+  {% for listing in watchlist.listings.all %}
   <div class="listing">
     <a href="{% url 'listing' listing_id=listing.id %}">
       <h3>{{ listing.title }}</h3>
@@ -33,7 +33,7 @@
     </div>
   </div>
   {% empty %}
-  <li>No listings in this category.</li>
+  <li>No listings added yet.</li>
   {% endfor %}
 </ul>
 {% endblock %}
