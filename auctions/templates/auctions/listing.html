@@ -46,11 +46,18 @@
 </div>
 
 {% if user.is_authenticated %}
-<form class="bid-form" action="{% url 'place_bid' listing_id=listing.id %}" method="post">
-  {% csrf_token %}
-  {{ bid_form }}
-  <input type="submit" value="Place Bid">
-</form>
+<div class="bid-placing">
+  <p>{{ bid_count }} bid(s) so far.
+    {% if user_winning %}
+      Your bid is the current bid.
+    {% endif %}
+  </p>
+  <form class="bid-form" action="{% url 'place_bid' listing_id=listing.id %}" method="post">
+    {% csrf_token %}
+    {{ bid_form }}
+    <input type="submit" value="Place Bid">
+  </form>
+</div>
 {% endif %}
 
 <div class="details">

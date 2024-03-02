@@ -47,7 +47,11 @@ def listing(request, listing_id):
         "winner": l.winner == request.user,
         "bid_form": bid_form,
         "comment_form": AddCommentForm(),
-        "comments": Comment.objects.filter(listing=l)})
+        "comments": Comment.objects.filter(listing=l),
+        "bid_count": len(Bid.objects.filter(listing=l)),
+        "user_winning": Bid.objects.filter(listing=l, author=request.user,   
+                                amount=l.price)
+        })
 
 
 @login_required

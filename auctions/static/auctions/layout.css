@@ -1,0 +1,13 @@
+body {
+    background-color: #252525;
+    color: antiquewhite;
+  }
+
+a, a:hover {
+    color: antiquewhite;
+    text-decoration: none;
+}
+
+a :hover {
+    color: white;
+}
