@@ -21,9 +21,11 @@ def index(request):
 
 def listing(request, listing_id):
     """Shows a specific listing page."""
+    # Try to get the listing object.
     try:
         l = Listing.objects.get(pk=listing_id)
         if request.user.is_authenticated:
+            # Check if listing is in user's watchlist.
             w = Watchlist.objects.get(owner=request.user)
             if w.listings.contains(l):
                 watchlisted = True
@@ -36,8 +38,16 @@ def listing(request, listing_id):
     except Watchlist.DoesNotExist:
         watchlisted = False
     
+    # Create the bid form and set the minimum bid value.
     bid_form = PlaceBidForm()
     bid_form.fields["amount"].widget.attrs["min"] = round(l.price * 1.1, 1)
+
+    # Check if the user has the higher bid.
+    if request.user.is_authenticated:
+        user_winning = Bid.objects.filter(listing=l, author=request.user,   
+                                amount=l.price)
+    else:
+        user_winning = False
 
     return render(request, "auctions/listing.html", {
         "listing": l,
@@ -49,8 +59,7 @@ def listing(request, listing_id):
         "comment_form": AddCommentForm(),
         "comments": Comment.objects.filter(listing=l),
         "bid_count": len(Bid.objects.filter(listing=l)),
-        "user_winning": Bid.objects.filter(listing=l, author=request.user,   
-                                amount=l.price)
+        "user_winning": user_winning
         })
 
 

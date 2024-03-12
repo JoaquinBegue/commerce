@@ -1,5 +1,5 @@
 body {
-    background-color: #252525;
+    background-color: #151515;
     color: antiquewhite;
   }
 
@@ -10,4 +10,8 @@ a, a:hover {
 
 a :hover {
     color: white;
+}
+
+.nav {
+    background-color: #252525;
 }

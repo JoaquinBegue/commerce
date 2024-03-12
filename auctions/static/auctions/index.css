@@ -6,57 +6,19 @@ ul {
     padding: 0px;
 }
 
-.listing {
-    padding: 10px;
-    margin-bottom: 10px;
-    height: 200px;
+.card {
     background-color: #505050;
+    max-width: 100%;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: 30% 70%;
-    grid-template-rows: 70% 30%;
-    grid-auto-rows: minmax(min-content, max-content);
-    height: 200px;
+.col-md-5 {
+    padding: 10px;
 }
 
-.grid-img {
-    text-align: center;
-
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row-start: 1;
-    grid-row-end: 3;
+.col-md-5 > img {
+    max-width: 300px;
 }
 
-.no-img-grid-cont {
-    display: grid;
-    grid-template-rows: 70% 30%;
-    grid-auto-rows: minmax(min-content, max-content);
-    height: 200px;
-}
-
-
-.grid-desc {
-
-    grid-column-start: 2;
-    grid-column-end: 3;
-    grid-row-start: 1;
-    grid-row-end: 2;
-}
-
-.grid-price {
-    font-weight: bold;
+.card-text {
     font-size: x-large;
-
-    grid-column-start: 2;
-    grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 3;
-}
-
-.no-img-grid-cont > .grid-desc, .no-img-grid-cont > .grid-price {
-    grid-column-start: auto;
-    grid-column-end: auto;
 }
