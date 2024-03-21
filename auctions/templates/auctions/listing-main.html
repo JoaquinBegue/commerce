@@ -29,13 +29,11 @@
     </div>
 
     <!--Price & Bid placing-->
-    <div class="row h-50 px-3">
+    <div class="row h-50 px-0">
       {% if user.is_authenticated %}
       <!--Price-->
       <div class="row h-50">
-        <div class="price">
-          <h2>${{ listing.price | floatformat:"2g" }}</h2>
-        </div>
+        <h2 class="m-0 h-75">${{ listing.price | floatformat:"2g" }}</h2>
       </div>
 
       <!--Bid placing-->
@@ -46,7 +44,7 @@
           <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Place Bid</button>
         </form>
         <div class="bid-placing">
-          <p>
+          <p class="m-0">
             {{ bid_count }} bid(s) so far.
             {% if user_winning %}
               Your bid is the current bid.
@@ -56,7 +54,7 @@
       </div>
 
       {% else %}
-      <div class="price">
+      <div class="price ">
         <h2>${{ listing.price | floatformat:"2g" }}</h2>
       </div>
       {% endif %}   
