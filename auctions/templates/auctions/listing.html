@@ -7,15 +7,15 @@
 
 {% block body %}
 
-<div id="main" class="row m-2" >
+<div id="main" class="row m-2 w-100" >
   {% include 'auctions/listing-main.html' %}
 </div>
 
-<div id="extra" class="row m-2">
-  
+<div id="extra" class="row m-2 w-100">
+  {% include 'auctions/listing-extra.html' %}
 </div>
 
-<div id="comments" class="row m-2">
+<div id="comments" class="row m-2 w-100">
   {% block comments %}{% endblock %}
 </div>
 

@@ -1,0 +1,28 @@
+{% load static %}
+
+<!--Description & Details-->
+<div class="row p-3 w-100">
+
+  <!--Description-->
+  <div class="col-lg-8">
+    <div class="description mx-5">
+      {{ listing.description }}
+    </div>
+  </div>
+
+  <!--Details-->
+  <div class="col-lg-4">
+    <div class="details">
+      <h3>Details</h3>
+      <ul>
+        <li>Listed by: {{ listing.creator }}</li>
+        {% if listing.category %}
+        <li>Category: No Category Listed</li>
+        {% else %}
+        <li>Category: No Category Listed</li>
+        {% endif %}
+      </ul>
+    </div>  
+  </div>
+
+</div>
