@@ -1,23 +1,25 @@
 {% load static %}
 
+{% if not active %}
 <!--Winner announcement-->
 <div class="header">
-  {% if not active and winner %}
+  {% if winner %}
     ¡You won the auction!
-  {% elif not active and owner %}
+  {% elif owner %}
     This auction listing is closed. The winner is {{ listing.winner }}.
-  {% elif not active and not winner %}
+  {% elif not winner %}
     This auction listing is closed.
   {% endif %}
 </div>
+{% endif %}
 
 <!--Image, title, price-->
-<div class="row p-3 w-100">
+<div class="row main mx-3 mb-3 p-3">
 
   <!--Image container-->
   <div class="col-md-7 text-center"> 
     <div class="img-cont">
-      <img src="{{ listing.image_url }}" width="300" style="max-width: 300px;">
+      <img src="{{ listing.image_url }}" width="300">
     </div>
   </div>
 

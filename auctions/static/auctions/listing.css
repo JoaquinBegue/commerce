@@ -1,0 +1,15 @@
+.main, .extra, .comments {
+    background-color: #505050;
+}
+
+.scroller {
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+body > div > div.row.main > div.row.p-3.w-100 > div.col-md-7.text-center > div > img
+{   
+    width: 300px;
+    max-width: 300px;
+}

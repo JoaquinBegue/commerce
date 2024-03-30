@@ -2,21 +2,15 @@
 {% load static %}
 
 {% block extrahead %}
-<link rel="stylesheet" href="{% static 'listing.css' %}">
+<link rel="stylesheet" href="{% static 'auctions/listing.css' %}">
 {% endblock %}
 
 {% block body %}
 
-<div id="main" class="row m-2 w-100" >
-  {% include 'auctions/listing-main.html' %}
-</div>
+{% include 'auctions/listing-main.html' %}
 
-<div id="extra" class="row m-2 w-100">
-  {% include 'auctions/listing-extra.html' %}
-</div>
+{% include 'auctions/listing-extra.html' %}
 
-<div id="comments" class="row m-2 w-100">
-  {% block comments %}{% endblock %}
-</div>
+{% include 'auctions/listing-comments.html' %}
 
 {% endblock %}

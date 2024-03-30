@@ -6,12 +6,12 @@
 {% endblock %}
 
 {% block body %}
-<h2>Active Listings</h2>
+<h2 class="title mx-3">Active Listings</h2>
 
 <ul>
   {% for listing in listings %}
   <a href="{% url 'listing' listing_id=listing.id %}">
-    <div class="card mb-3">
+    <div class="card mx-3 mb-3">
       <div class="row g-0 px-3">
         {% if listing.image_url %}
         <div class="col-md-5 text-center">

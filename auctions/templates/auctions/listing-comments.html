@@ -1,0 +1,44 @@
+{% load static %}
+
+<div class="row comments mx-3 mb-3 p-3">
+  <div class="col-md-5">
+    {% if user.is_authenticated %}
+    <h3>Add comment</h3>
+    <form class="input-group mb-3 w-100" action="{% url 'add_comment' listing_id=listing.id %}" method="post">
+      {% csrf_token %}
+      {{ comment_form }}
+      <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Add</button>
+    </form>
+    {% endif %}
+  </div>
+  <div class="col-md-7">
+      <h3>Comments</h3>
+      <div class="scroller">       
+        <ul>
+          <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis molestias, provident ex fugit, sit tempore fuga quae suscipit totam maiores voluptate praesentium! Quidem unde quos voluptate quas culpa assumenda vel.</li>
+          <li>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate, facilis? Suscipit, commodi omnis harum ipsum, assumenda impedit pariatur magni id, neque distinctio soluta nihil incidunt consectetur animi nostrum nulla inventore!</li>
+          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur molestiae asperiores atque, eligendi praesentium illo natus totam nemo inventore obcaecati aliquid sit nesciunt error consequatur accusamus ipsa commodi a dolorum?</li>
+          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta facilis omnis explicabo fugit rerum, nulla ab voluptates eum in. Quisquam architecto ducimus nisi esse ad ex earum iure, quos iusto.</li>
+          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta facilis omnis explicabo fugit rerum, nulla ab voluptates eum in. Quisquam architecto ducimus nisi esse ad ex earum iure, quos iusto.</li>
+          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta facilis omnis explicabo fugit rerum, nulla ab voluptates eum in. Quisquam architecto ducimus nisi esse ad ex earum iure, quos iusto.</li>
+          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta facilis omnis explicabo fugit rerum, nulla ab voluptates eum in. Quisquam architecto ducimus nisi esse ad ex earum iure, quos iusto.</li>
+          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta facilis omnis explicabo fugit rerum, nulla ab voluptates eum in. Quisquam architecto ducimus nisi esse ad ex earum iure, quos iusto.</li>
+          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta facilis omnis explicabo fugit rerum, nulla ab voluptates eum in. Quisquam architecto ducimus nisi esse ad ex earum iure, quos iusto.</li>
+          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta facilis omnis explicabo fugit rerum, nulla ab voluptates eum in. Quisquam architecto ducimus nisi esse ad ex earum iure, quos iusto.</li>
+          {% for comment in comments %}
+          <li>{{ comment }}</li>
+          {% empty %}
+          <li>No comments added yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+  </div>
+</div>
+
+{% if active and owner %}
+<form class="closing-form" action="{% url 'manage_closing' listing_id=listing.id %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="close" value="close">
+  <input type="submit" value="Close">
+</form>
+{% endif %}
