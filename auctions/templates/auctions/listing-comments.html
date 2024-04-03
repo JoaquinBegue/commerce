@@ -1,5 +1,6 @@
 {% load static %}
 
+<!--TODO Add different comments section display when not authorized.-->
 <div class="row comments mx-3 mb-3 p-3">
   <div class="col-md-5">
     {% if user.is_authenticated %}
@@ -13,6 +14,7 @@
   </div>
   <div class="col-md-7">
       <h3>Comments</h3>
+      <!--TODO Improve comments display.-->
       <div class="scroller">       
         <ul>
           <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis molestias, provident ex fugit, sit tempore fuga quae suscipit totam maiores voluptate praesentium! Quidem unde quos voluptate quas culpa assumenda vel.</li>

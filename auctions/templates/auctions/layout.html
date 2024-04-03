@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-  <title>{% block title %}Auctions{% endblock %}</title>
+  <title>{% block title %}Auction{% endblock %}</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link href="{% static 'auctions/layout.css' %}" rel="stylesheet">
@@ -13,55 +13,43 @@
 
 
 <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-2">
-          <a class="navbar-brand" href="#">Auctions</a>
-        </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon">dbb</span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'categories' %}">Categories</a>
-            </li>
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'watchlist' %}">Watchlist</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'create' %}">Create listing</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}">Log In</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'register' %}">Register</a>
-            </li>
-            {% endif %}
-            <span>
-              {% if user.is_authenticated %}
-              Signed in as <strong>{{ user.username }}</strong>.
-              {% else %}
-              Not signed in.
-              {% endif %}
-            </span>
-          </ul>
-        </div>
-      </div>
+  <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <div class="col-md-3 mb-2 mb-md-0">
+      <a href="{% url 'index' %}" class="d-inline-flex link-body-emphasis text-decoration-none"><h1>Auctions</h1></a>
     </div>
-  </nav>
-  
+    <!--TODO improve navbar styling.-->
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'watchlist' %}">Watchlist</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'create' %}">Create listing</a>
+      </li>
+      {% endif %}
+    </ul>
+
+    <div class="col-md-3 text-end">
+      {% if user.is_authenticated %}
+      <span>
+        Signed in as <strong>{{ user.username }}</strong>.
+      </span>
+      <a class="btn btn-secondary" href="{% url 'logout' %}">Logout</a>
+      {% else %}
+      <a class="btn btn-secondary" href="{% url 'login' %}">Login</a>
+      <a class="btn btn-secondary" href="{% url 'register' %}">Sign-up</a>
+      {% endif %}
+    </div>
+  </header>
+
   <hr>
+
   {% block body %}
   {% endblock %}
 </body>

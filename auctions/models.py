@@ -12,6 +12,7 @@ class Listing(m.Model):
     price = m.FloatField()
     categ = m.ForeignKey('Category', on_delete=m.SET_NULL, blank=True, null=True)
     date = m.DateTimeField(auto_now_add=True)
+    # TODO Add default image.
     image_url = m.TextField(blank=True, null=True)
     creator = m.ForeignKey(User, related_name="listings", on_delete=m.CASCADE)
     winner = m.ForeignKey(User, related_name="won", on_delete=m.SET_NULL, blank=True, null=True)
@@ -44,6 +45,7 @@ class Comment(m.Model):
 class Category(m.Model):
     name = m.CharField(max_length=30)
     listings = m.ManyToManyField(Listing, blank=True)
+    #TODO Add image field.
 
     def __str__(self):
         return f"({self.id}) {self.name}"
