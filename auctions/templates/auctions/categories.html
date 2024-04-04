@@ -14,28 +14,32 @@
   <div class="row mx-3 mb-3 p-3">
     {% for category in categories|slice:":3" %}
     <div class="col-md-4 px-5">
-      <div class="card w-100">
-        <div class="card-image">
-          <img src="{{ category.image_url }}" class="card-img-top mx-auto" alt="...">
+      <a href="{% url 'category_listings' category=category.name %}">
+        <div class="card w-100">
+          <div class="card-image">
+            <img src="{{ category.image_url }}" class="card-img-top mx-auto" alt="...">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title text-center">{{ category.name }}</h3>
+          </div>
         </div>
-        <div class="card-body">
-          <h3 class="card-title text-center">{{ category.name }}</h3>
-        </div>
-      </div>
+      </a>
     </div>
     {% endfor %}
-  </div>
+  </>
   <div class="row mx-3 mb-3 p-3">
     {% for category in categories|slice:"3:" %}
     <div class="col-md-4 px-5">
-      <div class="card w-100">
-        <div class="card-image">
-          <img src="{{ category.image_url }}" class="card-img-top mx-auto" alt="...">
+      <a href="{% url 'category_listings' category=category.name %}">
+        <div class="card w-100">
+          <div class="card-image">
+            <img src="{{ category.image_url }}" class="card-img-top mx-auto" alt="...">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title text-center">{{ category.name }}</h3>
+          </div>
         </div>
-        <div class="card-body">
-          <h3 class="card-title text-center">{{ category.name }}</h3>
-        </div>
-      </div>
+      </a>
     </div>
     {% endfor %}
   </div>

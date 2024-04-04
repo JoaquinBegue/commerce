@@ -22,7 +22,7 @@ class CreateListingForm(f.ModelForm):
                 'title': f.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
                 'description': f.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
                 'price': f.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Price', 'min': '1'}),
-                'categ': f.Select(attrs={'class': 'form-control'}, choices=Category.objects.all()),
+                'categ': f.Select(attrs={'class': 'form-control',}, choices=Category.objects.all()),
                 'image_url': f.TextInput(attrs={'class': 'form-control', 'placeholder': 'Image URL'})
             }
         

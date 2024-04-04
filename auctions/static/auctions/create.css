@@ -1,0 +1,18 @@
+.form-group {
+    width: 800px;
+    height: fit-content;
+    background-color: #505050;
+    border-radius: 8px;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+.price {
+    padding-right: 50px;
+}
+
+.categ, .button {
+    text-align: end;
+}

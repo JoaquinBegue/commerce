@@ -8,32 +8,33 @@
 {% endblock %}
 
 {% block body %}
-<h2>{{ category.name }}: Active Listings</h2>
+<h2 class="title mx-3">{{ category.name }}: Active Listings</h2>
 
 <ul>
   {% for listing in listings %}
-  <div class="listing">
-    <a href="{% url 'listing' listing_id=listing.id %}">
-      <h3>{{ listing.title }}</h3>
-    </a>
-    {% if listing.image_url %}
-    <div class="grid-container">
-      <div class="grid-img">
-        <img src="{{ listing.image_url }}" height="100px">
-      </div>
-    {% else %}
-    <div class="no-img-grid-cont">
-    {% endif %}
-      <div class="grid-desc">
-        {{ listing.description }}
-      </div>
-      <div class="grid-price">
-        {{ listing.price }}
+  <a href="{% url 'listing' listing_id=listing.id %}">
+    <div class="card mx-3 mb-3">
+      <div class="row g-0 px-3">
+        <div class="col-md-5 text-center">
+          {% if listing.image_url %}
+          <img src="{{ listing.image_url }}" class="img-fluid rounded" width="300px">
+          {% else %}
+          <img src="https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-15.png" class="img-fluid rounded" width="300px">
+          {% endif %}
+        </div>
+        <div class="col-md-7">
+          <div class="card-body">
+            <h2 class="card-title">{{ listing.title }}</h2>
+            <p class="card-text">{{ listing.description }}</p>
+            <p class="card-text"><small class="text-body-secondary">Listed {{ listing.date }}</small></p>
+            <h4>${{ listing.price | floatformat:"2g" }}</h4>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </a>
   {% empty %}
-  <li>No listings in this category.</li>
+  <li>No active listings yet.</li>
   {% endfor %}
 </ul>
 {% endblock %}

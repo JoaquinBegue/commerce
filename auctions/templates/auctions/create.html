@@ -1,10 +1,46 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block extrahead %}
+  <link href="{% static 'auctions/create.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
 
-<form action="" method="post">
-  {% csrf_token %}
-  {{ form }}
-  <input class="btn btn-secondary" type="submit" value="Submit">
-</form>
+<div class="form-group mx-auto p-3">
+  <h2 class="title mb-2">Create a Listing</h2>
+
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+      {{ form.title.as_field_group }}
+    </div>
+    <div class="fieldWrapper">
+      {{ form.description.as_field_group }}
+    </div>
+    <div class="row">
+      <div class="price col-6">
+        <div class="fieldWrapper">
+          {{ form.price.as_field_group }}
+        </div>
+      </div>
+      <div class="categ col-6">
+        <div class="fieldWrapper">
+          {{ form.categ.as_field_group }}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-9">
+        <div class="fieldWrapper">
+          {{ form.image_url.as_field_group }}
+        </div>
+      </div>
+      <div class="button col-3">
+        <input class="btn btn-secondary" type="submit" value="Submit">
+      </div>
+    </div>
+  </form>
+</div>
 {% endblock %}

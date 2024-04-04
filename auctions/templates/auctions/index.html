@@ -13,19 +13,19 @@
   <a href="{% url 'listing' listing_id=listing.id %}">
     <div class="card mx-3 mb-3">
       <div class="row g-0 px-3">
-        {% if listing.image_url %}
         <div class="col-md-5 text-center">
+          {% if listing.image_url %}
           <img src="{{ listing.image_url }}" class="img-fluid rounded" width="300px">
+          {% else %}
+          <img src="https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-15.png" class="img-fluid rounded" width="300px">
+          {% endif %}
         </div>
         <div class="col-md-7">
-        {% else %}
-        <div class="col-md-12">
-        {% endif %}
           <div class="card-body">
             <h2 class="card-title">{{ listing.title }}</h2>
             <p class="card-text">{{ listing.description }}</p>
             <p class="card-text"><small class="text-body-secondary">Listed {{ listing.date }}</small></p>
-            <h6>${{ listing.price | floatformat:"2g" }}</h6>
+            <h4>${{ listing.price | floatformat:"2g" }}</h4>
           </div>
         </div>
       </div>
