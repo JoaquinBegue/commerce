@@ -1,0 +1,10 @@
+.form-group {
+    width: 400px;
+    height: fit-content;
+    background-color: #505050;
+    border-radius: 8px;
+}
+
+.col-9 {
+    text-align: end;
+}

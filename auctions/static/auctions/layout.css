@@ -15,3 +15,7 @@ a :hover {
 header {
     background-color: #252525;
 }
+
+.auth-group {
+    text-align: end;
+}

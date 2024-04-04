@@ -14,14 +14,8 @@
 
 <body>
   <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-    <div class="col-md-3 mb-2 mb-md-0">
-      <a href="{% url 'index' %}" class="d-inline-flex link-body-emphasis text-decoration-none"><h1>Auctions</h1></a>
-    </div>
     <!--TODO improve navbar styling.-->
-    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
-      </li>
+    <ul class="nav col-md-3 mb-2 mb-md-0">
       <li class="nav-item">
         <a class="nav-link" href="{% url 'categories' %}">Categories</a>
       </li>
@@ -35,12 +29,18 @@
       {% endif %}
     </ul>
 
-    <div class="col-md-3 text-end">
+    <div class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+      <a href="{% url 'index' %}" class="d-inline-flex link-body-emphasis text-decoration-none">
+        <h1>Auctions</h1>
+      </a>
+    </div>
+
+    <div class="auth-group col-md-3">
       {% if user.is_authenticated %}
       <span>
         Signed in as <strong>{{ user.username }}</strong>.
       </span>
-      <a class="btn btn-secondary" href="{% url 'logout' %}">Logout</a>
+      <a class="btn btn-secondary mx-2 end-0" href="{% url 'logout' %}">Logout</a>
       {% else %}
       <a class="btn btn-secondary" href="{% url 'login' %}">Login</a>
       <a class="btn btn-secondary" href="{% url 'register' %}">Sign-up</a>
