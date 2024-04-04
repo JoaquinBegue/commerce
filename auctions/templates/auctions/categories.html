@@ -4,21 +4,41 @@
 {% block title %}Auctions - Categories{% endblock %}
 
 {% block extrahead %}
-  <link href="{% static 'auctions/index.css' %}" rel="stylesheet">
+  <link href="{% static 'auctions/categories.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-<h2>Categories</h2>
+<h2 class="mx-4 px-5">Categories</h2>
 
-<ul>
-  {% for category in categories %}
-  <div class="category">
-    <a href="{% url 'category_listings' category=category.name %}">
-      <h3>{{ category.name }}</h3>
-    </a>
+<div class="categories">
+  <div class="row mx-3 mb-3 p-3">
+    {% for category in categories|slice:":3" %}
+    <div class="col-md-4 px-5">
+      <div class="card w-100">
+        <div class="card-image">
+          <img src="{{ category.image_url }}" class="card-img-top mx-auto" alt="...">
+        </div>
+        <div class="card-body">
+          <h3 class="card-title text-center">{{ category.name }}</h3>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
   </div>
-  {% empty %}
-  <li>No categories yet.</li>
-  {% endfor %}
-</ul>
+  <div class="row mx-3 mb-3 p-3">
+    {% for category in categories|slice:"3:" %}
+    <div class="col-md-4 px-5">
+      <div class="card w-100">
+        <div class="card-image">
+          <img src="{{ category.image_url }}" class="card-img-top mx-auto" alt="...">
+        </div>
+        <div class="card-body">
+          <h3 class="card-title text-center">{{ category.name }}</h3>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
 {% endblock %}

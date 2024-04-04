@@ -1,0 +1,12 @@
+.card {
+    background-color: #505050;
+    max-width: 100%;
+    height: 350px;
+}
+
+
+
+img {
+    height: 250px;
+    overflow: hidden;
+}
